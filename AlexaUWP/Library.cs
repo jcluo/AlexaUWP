@@ -15,7 +15,7 @@ public class Library
 {
     private MediaCapture capture;
     private InMemoryRandomAccessStream buffer;
-    private Uri alexaWebHost = new Uri("http://192.168.2.55:5000");
+    public Uri alexaWebUri;
 
     public static bool Recording;
 
@@ -75,7 +75,7 @@ public class Library
         using (var httpClient = new HttpClient())
         {
             var requestContent = new HttpMultipartFormDataContent();
-            var requestUri = new Uri(alexaWebHost.ToString() + "audio");
+            var requestUri = new Uri(alexaWebUri.ToString() + "audio");
             var streamContent = new HttpStreamContent(buffer.GetInputStreamAt(0));
             streamContent.Headers.ContentType = Windows.Web.Http.Headers.HttpMediaTypeHeaderValue.Parse("audio/wav");
             streamContent.Headers.ContentLength = buffer.Size;

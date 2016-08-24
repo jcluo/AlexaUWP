@@ -28,19 +28,21 @@ namespace AlexaUWP
         private BitmapImage greenIcon;
         private BitmapImage whiteIcon;
         private BitmapImage purpleIcon;
+        public Library Library = new Library();
 
         public MainPage()
         {
             this.InitializeComponent();
+            var localsettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            if (localsettings.Values["alexaWebUri"]==null)
+                localsettings.Values["alexaWebUri"] = "http://192.168.2.55:5000";
+            Library.alexaWebUri = new Uri((string)localsettings.Values["alexaWebUri"]);
             blueIcon = new BitmapImage(new Uri("ms-appx:///Assets/logo-blue.png"));
             greenIcon = new BitmapImage(new Uri("ms-appx:///Assets/logo-green.png"));
             whiteIcon = new BitmapImage(new Uri("ms-appx:///Assets/logo-white.png"));
             purpleIcon = new BitmapImage(new Uri("ms-appx:///Assets/logo-purple.png"));            
-
             recordButton.Source = blueIcon;
         }
-
-        public Library Library = new Library();
 
         private void StartRecord(object sender, RoutedEventArgs e)
         {
@@ -62,6 +64,12 @@ namespace AlexaUWP
         private void onMediaEnded(object sender, RoutedEventArgs e)
         {
             recordButton.Source = blueIcon;
+        }
+
+        private async void onButtonClick(object sender, RoutedEventArgs e)
+        {
+            var dialog = new SettingsDialog(Library);
+            await dialog.ShowAsync();
         }
     }
 }
