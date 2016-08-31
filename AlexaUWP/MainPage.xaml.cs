@@ -24,12 +24,14 @@ namespace AlexaUWP
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private BitmapImage blueIcon;
-        private BitmapImage greenIcon;
-        private BitmapImage whiteIcon;
-        private BitmapImage purpleIcon;
+        //private BitmapImage blueIcon;
+        //private BitmapImage greenIcon;
+        //private BitmapImage whiteIcon;
+        //private BitmapImage purpleIcon;
         public Library Library = new Library();
 
+        public Brush blackbrush = new SolidColorBrush(Windows.UI.Colors.Black);
+        public Brush greenbrush = new SolidColorBrush(Windows.UI.Colors.Green);
         public MainPage()
         {
             this.InitializeComponent();
@@ -37,33 +39,28 @@ namespace AlexaUWP
             if (localsettings.Values["alexaWebUri"]==null)
                 localsettings.Values["alexaWebUri"] = "http://192.168.2.55:5000";
             Library.alexaWebUri = new Uri((string)localsettings.Values["alexaWebUri"]);
-            blueIcon = new BitmapImage(new Uri("ms-appx:///Assets/logo-blue.png"));
-            greenIcon = new BitmapImage(new Uri("ms-appx:///Assets/logo-green.png"));
-            whiteIcon = new BitmapImage(new Uri("ms-appx:///Assets/logo-white.png"));
-            purpleIcon = new BitmapImage(new Uri("ms-appx:///Assets/logo-purple.png"));            
-            recordButton.Source = blueIcon;
+            recordButton.AddHandler(PointerPressedEvent, new PointerEventHandler(StartRecord), true);
+            recordButton.AddHandler(PointerReleasedEvent, new PointerEventHandler(StopRecord), true);
         }
 
         private void StartRecord(object sender, RoutedEventArgs e)
         {
-            recordButton.Source = whiteIcon;
             Library.Record();
         }
 
         private async void StopRecord(object sender, RoutedEventArgs e)
         {
-            recordButton.Source = blueIcon;
             InMemoryRandomAccessStream buffer = await Library.Stop();
             if (buffer!=null)
             {
-                recordButton.Source = greenIcon;
+                alexaText.Foreground = greenbrush;
                 playback.SetSource(buffer, "audio/mpeg");
             }
         }
 
         private void onMediaEnded(object sender, RoutedEventArgs e)
         {
-            recordButton.Source = blueIcon;
+            alexaText.Foreground = blackbrush;
         }
 
         private async void onButtonClick(object sender, RoutedEventArgs e)
@@ -73,4 +70,3 @@ namespace AlexaUWP
         }
     }
 }
-

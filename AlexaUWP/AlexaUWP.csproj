@@ -111,11 +111,7 @@
     <None Include="AlexaUWP_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\alexa-text.png" />
     <Content Include="Assets\logo-blue.png" />
-    <Content Include="Assets\logo-green.png" />
-    <Content Include="Assets\logo-purple.png" />
-    <Content Include="Assets\logo-white.png" />
     <Content Include="Assets\NewStoreLogo.scale-100.png" />
     <Content Include="Assets\NewStoreLogo.scale-125.png" />
     <Content Include="Assets\NewStoreLogo.scale-150.png" />
